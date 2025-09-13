@@ -4,6 +4,12 @@
 	(generator_version "9.0")
 	(uuid "4a1fd320-e82a-408b-bd41-eddf9c8578fa")
 	(paper "A1")
+	(title_block
+		(title "EOS GD-5434 ISA Video Card")
+		(date "2025-09-13")
+		(rev "0.7")
+		(company "Alexander Petrov")
+	)
 	(lib_symbols
 		(symbol "74xGxx:74AHCT1G04"
 			(exclude_from_sim no)
