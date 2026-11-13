@@ -37,7 +37,7 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 1.0,
+          "drill": 0.8,
           "height": 1.6,
           "width": 1.6
         },
@@ -492,6 +492,7 @@
       "single_global_label": "ignore",
       "unannotated": "error",
       "unconnected_wire_endpoint": "warning",
+      "undefined_netclass": "error",
       "unit_value_mismatch": "error",
       "unresolved_variable": "error",
       "wire_dangling": "error"
@@ -1510,7 +1511,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "out/eos-0.3/",
+      "plot": "out/eos-1.0.2/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",

@@ -1,57 +1,127 @@
-# Helios
-CL-GD5434-based ISA VGA card.
+# Eos VGA Card
 
-ISA видео карта на чипе Cirrus Logic GD5434
-Поддерживаются конфигурации с двумя/четырьмя чипами памяти (1Mb, 2Mb). 
-На данный момент плата не тестировалась.
+[Русская версия](README_RU.md)
 
+Main project repository: [git.snark13.com/snark13/eos](https://git.snark13.com/snark13/eos.git).
 
-## Specification
-- Быстрая работа с памятью в MS-DOS
-- Полностью VGA совместима
-- MS Windows Acceleration
-- встроенный True Color RAMDAC
-- Два возможных варианта конфигурации памяти (1Mb/2Mb) 
-- 16-bit ISA двухслойная плата
+GitHub mirror: [github.com/snark013/vga-clgd5434-eos](https://github.com/snark013/vga-clgd5434-eos).
 
+Eos is a VGA graphics card for the 16-bit ISA bus, based on the Cirrus Logic CL-GD5434. The project is designed in KiCad and uses a two-layer PCB.
 
-## Configuration
-- R39-R42 - конфигурационные резисторы
-    - R39 - DRAM speed (50MHz default),
-    - R40 - 7/6 MCLK Extended RAS timing,
-    - R41 - DRAM multi CAS/WE,
-    - R42 - 3C3/4E68 sleep port,
+## Project status
 
-    По умолчанию устанавливаются резисторы кроме R39 и R41. 
-    Более подробно в документации на видеочип.
-- 1Mb/2Mb Video RAM
-    - 1Mb - U1-U2,
-    - 2Mb - U1-U2,U8-U9.
-- JP2, JP4-JP7 - конфигурационные перемычки
-    - JP2 - zero WS ISA,
-    - JP4 - BIOS ROM section select,
-    - JP5 - использовать IRQ2,
-    - JP6-JP7 - DDC support
-        - DDC2B - JP6, JP7 и R27-R30 должны быть запаяны,
-        - DDC1 - R26, R28 и R30 должны быть запаяны.
+Version 0.7 has been assembled and tested with both 1 MB and 2 MB of video memory.
 
-    По умолчанию устанавливается перемычка JP2 и запаивается вариант для DDC2B.
+Release files for version 1.0.2 are available in the repository. This version corrects a device type label in the schematic; the PCB is unchanged. The test results above apply to version 0.7.
 
-- в качестве источника 14.318MHz может использоваться сигнал BOSC с ISA шины (устанавливается R11) или собственный генератор (устанавливается Y1).
+## Key features
 
+- VGA compatibility.
+- Fast video memory access in MS-DOS.
+- Hardware graphics acceleration in Microsoft Windows.
+- Integrated video digital-to-analog converter (RAMDAC) with True Color support.
+- Two video memory configurations: 1 MB or 2 MB.
+- Two-layer PCB for the 16-bit ISA bus.
 
-## Changes
+## Video memory configurations
 
-- Version 0.7
-    - все конденсаторы 0.1u и больше заменены на типоразмер 0805,
-    - добавлен альтернативный футпринт (5032) для собственного генератора на 14.318Mhz.
-- Version 0.5
-    - добавлена возможность использовать собственный генератор на 14.318Mhz (7050),
-    - оптимизация расположения элементов,
-    - изменена нумерация элементов.
-- Version 0.3
-    - первая версия. 
+| Capacity | Chips to populate | Status |
+| --- | --- | --- |
+| 1 MB | U1, U2 | Tested on the version 0.7 board. |
+| 2 MB | U1, U2, U8, U9 | Tested on the version 0.7 board. |
+
+## Project files
+
+- [eos.kicad_pro](eos.kicad_pro) — KiCad project.
+- [eos.kicad_sch](eos.kicad_sch) — schematic.
+- [eos.kicad_pcb](eos.kicad_pcb) — PCB layout.
+- [eos.pretty/](eos.pretty/) — local footprint library.
+- [docs/](docs/) — reference documentation.
+- [release/](release/) — release files: Gerber files, PDF schematics, and interactive bills of materials.
+- [images/0.7/](images/0.7/) — photos of the assembled version 0.7 board.
+
+### Release files
+
+| Version | Gerber files | Schematic | Interactive bill of materials |
+| --- | --- | --- | --- |
+| 1.0.2 | [ZIP](release/1.0.2/eos-1.0.zip) | [PDF](release/1.0.2/eos.pdf) | [HTML](release/1.0.2/ibom.html) |
+| 0.7 | [ZIP](release/0.7/eos.zip) | [PDF](release/0.7/eos.pdf) | [HTML](release/0.7/ibom.html) |
+
+## Configuration and assembly
+
+Check the configuration input settings against the [CL-GD543x/4x Technical Reference Manual](docs/Alpine_VGA_Family_CL-GD543X_4X_Technical_Reference_Manual_4ed_Feb95.pdf).
+
+### Configuration resistors
+
+| Reference | Function |
+| --- | --- |
+| R39 | DRAM clock selection (50 MHz by default) |
+| R40 | Extended RAS timing: 7/6 MCLK |
+| R41 | DRAM multi CAS/WE configuration |
+| R42 | Sleep control port selection: 3C3h / 4E68h |
+
+Of the resistors listed above, R40 and R42 are fitted by default; R39 and R41 are not fitted.
+
+### Configuration jumpers
+
+| Reference | Function |
+| --- | --- |
+| JP2 | Zero-wait-state ISA operation |
+| JP4 | BIOS ROM section selection |
+| JP5 | Enable IRQ2 |
+| JP6, JP7 | DDC configuration |
+
+JP2 is fitted by default, and the DDC2B configuration is used.
+
+### DDC support
+
+- DDC2B: fit JP6, JP7, and R27–R30.
+- DDC1: fit R26, R28, and R30.
+
+### Clock source
+
+Two options are provided for the 14.318 MHz clock:
+
+- ISA bus BOSC signal: fit R11.
+- On-board oscillator: fit Y1.
+
+## BIOS
+
+The assembled board uses a BIOS ROM chip from a PCI graphics card based on the CL-GD5434. This BIOS also works with the ISA board.
+
+Unlike BIOS images for earlier Cirrus Logic graphics chips, the CL-GD543x family BIOS already uses linear (“flat”) addressing. The address conversion described for Helios is not required. Compatibility with other BIOS images must be verified separately.
+
+## Revision history
+
+### 1.0.2
+
+- Corrected the mislabeled U6 device type from 74LS541 to 74LS245.
+- The PCB is unchanged.
+
+### 0.7
+
+- Changed all capacitors below 0.1 µF to the 0603 package size.
+- Added an alternative 5032 footprint for the 14.318 MHz oscillator.
+- Built the first working board version.
+
+### 0.5
+
+- Added support for an on-board 14.318 MHz oscillator in a 7050 package.
+- Optimized component placement.
+- Renumbered components.
+
+### 0.3
+
+- Initial project version.
+
+## Photos
+
+Assembled version 0.7 board.
+
+<img src="images/0.7/0.7-top.jpg" alt="Eos 0.7: top view" width="480" height="228">
+
+<img src="images/0.7/0.7-bottom.jpg" alt="Eos 0.7: bottom view" width="480" height="240">
 
 ## Related projects
-- https://github.com/Leshak-pcb/Pine-CL-GD5434 - похожий проект на таком же чипе. На 4-х слойной плате.
 
+- [Pine CL-GD5434](https://github.com/Leshak-pcb/Pine-CL-GD5434) — a graphics card based on the same chip, using a four-layer PCB.
